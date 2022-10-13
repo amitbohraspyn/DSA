@@ -132,23 +132,7 @@ class DoublyLinkedList {
     }
   }
 
-  reverse(){
-    if(this.head.next === null){
-        return this.head;
-    }else{
-        var first = this.head;
-        this.tail = this.head;
-        var second = this.head.next;    
-        while(second){
-            var third = second.next;
-            second.next = first;
-            second = third;
-            first = second;
-        }
-        this.head.next = null;
-        this.head = first;
-    }
-  }
+  
 }
 
 var myList = new DoublyLinkedList(10);
