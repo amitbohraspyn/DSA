@@ -11,6 +11,7 @@ class Stack {
     this.bottom = null;
     this.length = 0;
   }
+
   push(value) {
     var node = new Node(value);
     if (this.length === 0) {
@@ -26,7 +27,7 @@ class Stack {
 
   pop() {
     if (this.length === 0) {
-      console.log("Empty Stack");
+        console.log("Empty Stack");
       return null;
     } else if (this.length === 1) {
       var value = this.top.value;
@@ -42,42 +43,19 @@ class Stack {
     }
   }
 
-  peek() {
-    return this.top;
+  peek(){
+    return this.top.value;
   }
 }
 
-class Queue {
-  constructor() {
-    this.stack1 = new Stack();
-    this.stack2 = new Stack();
-  }
-  enqueue(value) {
-    this.stack1.push(value);
-    while (this.stack1.length !== 0) {
-      var value = this.stack1.pop();
-      this.stack2.push(value);
-    }
-  }
-  dequeue() {
-    if (this.stack2.length === 0) {
-      console.log("Empty Queue");
-      return null;
-    } else {
-      var value = this.stack2.pop();
-      return value;
-    }
-  }
-}
 
-var myQueue = new Queue();
-
-myQueue.enqueue(10);
-myQueue.enqueue(20);
-myQueue.enqueue(30);
-myQueue.enqueue(40);
-console.log(myQueue);
-console.log(myQueue.dequeue());
-console.log(myQueue.dequeue());
-console.log(myQueue.dequeue());
-console.log(myQueue);
+var myStack = new Stack();
+myStack.push(10);
+myStack.push(20);
+myStack.push(30);
+console.log("myStack 1", myStack);
+myStack.pop();
+myStack.pop();
+console.log(myStack.pop());
+myStack.pop();
+console.log("myStack2 ", myStack);

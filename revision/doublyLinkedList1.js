@@ -1,20 +1,22 @@
 class DoublyLinkedList {
   constructor(value) {
-    this.addElementToEmpty(value);
+    this.addValueToEmpty(value);
   }
-  addElementToEmpty(value) {
-    var newNode = {
+
+  addValueToEmpty(value) {
+    var node = {
       value: value,
       next: null,
       prev: null,
     };
-    this.head = newNode;
-    this.tail = this.head;
+    this.head = node;
+    this.tail = node;
     this.length = 1;
   }
+
   append(value) {
     if (this.length === 0) {
-      this.addElementToEmpty(value);
+      this.addValueToEmpty(value);
     } else {
       var newNode = {
         value: value,
@@ -24,47 +26,31 @@ class DoublyLinkedList {
       newNode.prev = this.tail;
       this.tail.next = newNode;
       this.tail = newNode;
+      this.length++;
     }
-    this.length++;
   }
+
   prepend(value) {
     if (this.length === 0) {
-      this.addElementToEmpty(value);
+      this.addValueToEmpty(value);
     } else {
       var newNode = {
         value: value,
         next: null,
         prev: null,
       };
-      newNode.next = this.head;
       this.head.prev = newNode;
+      newNode.next = this.head;
       this.head = newNode;
+      this.length++;
     }
-    this.length++;
   }
-  printList() {
-    var outList = [];
-    var currentNode = this.head;
-    while (currentNode) {
-      outList.push(currentNode.value);
-      currentNode = currentNode.next;
-    }
-    console.log("---------> ", outList);
-  }
-  printReverseList() {
-    var outList = [];
-    var currentNode = this.tail;
-    while (currentNode) {
-      outList.push(currentNode.value);
-      currentNode = currentNode.prev;
-    }
-    console.log("<--------- ", outList);
-  }
+
   insert(index, value) {
     if (this.length === 0) {
-      this.addElementToEmpty(value);
+      this.addValueToEmpty(value);
     } else {
-      if (index <= 0) {
+      if (index === 0) {
         this.prepend(value);
       } else if (index >= this.length) {
         this.append(value);
@@ -78,96 +64,136 @@ class DoublyLinkedList {
         var followerNode = leaderNode.next;
         newNode.prev = leaderNode;
         newNode.next = followerNode;
-        leaderNode.next = newNode;
         followerNode.prev = newNode;
+        leaderNode.next = newNode;
         this.length++;
       }
     }
   }
+
   traverseNode(index) {
     if (index <= this.length / 2) {
       var counter = 0;
       var currentNode = this.head;
-      while (index !== counter) {
+      while (counter !== index) {
         currentNode = currentNode.next;
         counter++;
       }
     } else {
-      counter = this.length - 1;
+      var counter = this.length - 1;
       var currentNode = this.tail;
-      while (index !== counter) {
+      while (counter !== index) {
         currentNode = currentNode.prev;
         counter--;
       }
     }
     return currentNode;
   }
+
+  printList() {
+    var outList = [];
+    var currentNode = this.head;
+    while (currentNode) {
+      outList.push(currentNode.value);
+      currentNode = currentNode.next;
+    }
+    console.log(outList);
+  }
+
+  printReverseList() {
+    var outList = [];
+    var currentNode = this.tail;
+    while (currentNode) {
+      outList.push(currentNode.value);
+      currentNode = currentNode.prev;
+    }
+    console.log(outList);
+  }
+
+  emptyList() {
+    this.head = null;
+    this.tail = null;
+    this.length = 0;
+  }
+
   removeHead() {
     if (this.length === 0) {
       console.log("Empty List");
-    } else if (this.length === 1) {
-      this.head = null;
-      this.tail = null;
-      this.length = 0;
+      return null;
     } else {
-      var secondItem = this.head.next;
-      secondItem.prev = null;
-      this.head = secondItem;
-      this.length--;
+      if (this.length === 1) {
+        var value = this.head.value;
+        this.emptyList();
+        return value;
+      } else {
+        var value = this.head.value;
+        this.head = this.head.next;
+        this.head.prev = null;
+        this.length--;
+        return value;
+      }
     }
   }
+
   pop() {
     if (this.length === 0) {
-      console.log("Empty List");
-    } else if (this.length === 1) {
-      this.head = null;
-      this.tail = null;
-      this.length = 0;
+      console.log("Empty list");
+      return null;
     } else {
-      var secondLastItem = this.tail.prev;
-      secondLastItem.next = null;
-      this.tail = secondLastItem;
-      this.length--;
+      if (this.length === 1) {
+        var value = this.head.value;
+        this.emptyList();
+        return value;
+      } else {
+        var value = this.tail.value;
+        this.tail = this.tail.prev;
+        this.tail.next = null;
+        this.length--;
+        return value;
+      }
     }
   }
 
   remove(index) {
     if (this.length === 0) {
       console.log("Empty List");
+      return null;
     } else {
       if (index <= 0) {
-        this.removeHead();
+        var value = this.removeHead();
       } else if (index >= this.length - 1) {
-        this.pop();
+        var value = this.pop();
       } else {
         var leaderNode = this.traverseNode(index - 1);
         var followerNode = leaderNode.next;
-        var pointerHolding = followerNode.next;
-        leaderNode.next = pointerHolding;
-        pointerHolding.prev = leaderNode;
+        var thirdNode = followerNode.next;
+        leaderNode.next = thirdNode;
+        thirdNode.prev = leaderNode;
         this.length--;
+        var value = followerNode.value;
       }
+      return value;
     }
   }
 
-  reverse(){
-    if(this.length <= 1){
-        return this.head;
-    }else{
-        var first = this.head;
-        var second = first.next;
-        this.head.prev = second;
-        while(second !== null){
-            var third = second.next;
-            second.next = first;
-            second.prev = third;
-            first = second;
-            second = third;
-        }
-        this.head.next = null;
-        this.tail = this.head;
-        this.head = first;
-        this.head.prev = null;
+  reverse() {
+    if (this.length <= 1) {
+      return this.head;
+    } else {
+      var first = this.head;
+      var second = first.next;
+      while (second) {
+        var temp = second.next;
+        second.next = first;
+        first.prev = second;
+        first = second;
+        second = temp;
+      }
+      this.head.next = null;
+      this.tail = this.head;
+      first.prev = null;
+      this.head = first;
+      return this.head;
     }
   }
 }
@@ -204,4 +230,3 @@ myList.printList();
 myList.reverse();
 console.log("myList 11", myList);
 myList.printList();
-
