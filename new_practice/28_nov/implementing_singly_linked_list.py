@@ -64,6 +64,23 @@ class LinkedList:
 		self.length -= 1
 		return curr_node
 
+	def reverse(self):
+	    if self.length == 1:
+	        return None
+	    first = self.head
+	    second = self.head.next
+	    head = self.head
+	    tail = self.tail
+	    while(second is not None):
+	        temp = second.next
+	        second.next = first
+	        first.next = temp
+	        first = second
+	        second = temp
+	    self.tail = head
+	    self.head = tail
+	    return None
+
 	def print_like_list(self):
 		array = []
 		node = self.head
@@ -83,4 +100,6 @@ my_list.print_like_list()
 my_list.remove(3)
 my_list.print_like_list()
 my_list.remove(1)
+my_list.print_like_list()
+my_list.reverse()
 my_list.print_like_list()
